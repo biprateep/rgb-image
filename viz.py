@@ -1,14 +1,14 @@
 import numpy as np
 
 
-def _lupton_intensity(image, type="mean"):
+def _lupton_intensity(image, int_type="mean"):
     """Multicolor intensity as defined in Lupton (2004)
 
     Parameters
     ----------
     image : `~numpy.ndarray`
         Array of shape (nobj, npix, npix, nchans)
-    type : string
+    int_type : string
         mean, sum or rms of the input channels as the intensity
 
     Returns
@@ -17,16 +17,16 @@ def _lupton_intensity(image, type="mean"):
         A combined measure of pixel intensities
     """
 
-    if type == "mean":
+    if int_type == "mean":
         return np.mean(image, axis=-1)
-    elif type == "sum":
+    elif int_type == "sum":
         return np.sum(image, axis=-1)
-    elif type == "rms":
+    elif int_type == "rms":
         return np.sqrt(np.mean(np.square(image), axis=-1))
 
 
 def _lupton_stretch(
-    I, Q, stretch, type="lupton", minimum=0,
+    I, Q, stretch, stretch_type="lupton", minimum=0,
 ):
     """stretch based scaling of the combined image
 
@@ -38,7 +38,7 @@ def _lupton_stretch(
         asinh softening parameter
     stretch : float
         The linear stretch parameter
-    type : str, optional
+    stretch_type : str, optional
         The type of scaling function to use, lupton, lupton_sqrt or marshal, by default "lupton"
     minimum : float, optional
         The ofset to use for the lupton stretchings
@@ -51,11 +51,11 @@ def _lupton_stretch(
     Add zscale based scaling to as in astropy
     """
 
-    if type == "lupton":
+    if stretch_type == "lupton":
         return np.arcsinh(Q * (I - minimum) / stretch) / Q
-    if type == "lupton_sqrt":
+    if stretch_type == "lupton_sqrt":
         return np.sqrt(np.arcsinh(Q * (I - minimum) / stretch) / Q)
-    if type == "marshal":
+    if stretch_type == "marshal":
         return np.arcsinh(Q * I / stretch) / (Q * I)
 
 
