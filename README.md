@@ -1,7 +1,7 @@
 # rgb-image
 Experiments in making informative (and pretty) RGB images of galaxies.
 
-Use case: Plot SDSS galaxy pictures and eventually any kind of galaxy pictures.
+Use case: Plot SDSS galaxy pictures and eventually any kind of galaxy pictures obtained using CCDs
 
 Aim:
 - Make 3 band to RGB images from SDSS
