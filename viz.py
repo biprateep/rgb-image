@@ -1,7 +1,11 @@
 import numpy as np
 
+# To Do expand to HST/COSMOS imaging using hyperspectral plotting techniques
+# (ex. reduce N band images to 3 bands by PCA, etc)
+# To Do automatically calculate band scales by incorporating filter curves
 
-def _lupton_intensity(image, int_type="mean"):
+
+def _lupton_intensity(image, int_type="mean", **kwargs):
     """Multicolor intensity as defined in Lupton (2004)
 
     Parameters
@@ -25,9 +29,7 @@ def _lupton_intensity(image, int_type="mean"):
         return np.sqrt(np.mean(np.square(image), axis=-1))
 
 
-def _lupton_stretch(
-    I, Q, stretch, stretch_type="lupton", minimum=0,
-):
+def _lupton_stretch(I, Q, stretch, stretch_type="lupton", minimum=0, **kwargs):
     """stretch based scaling of the combined image
 
     Parameters
@@ -59,7 +61,7 @@ def _lupton_stretch(
         return np.arcsinh(Q * I / stretch) / (Q * I)
 
 
-def _lupton_saturate(r, g, b, threshold):
+def _lupton_saturate(r, g, b, threshold, **kwargs):
 
     x = numpy.dstack((r, g, b))
 
@@ -74,7 +76,7 @@ def _lupton_saturate(r, g, b, threshold):
     return rr, gg, bb
 
 
-def _offset(image, offset=0):
+def _offset(image, offset=0, **kwargs):
     """
     Add an arbitrary offset to the final scaled image
     Args:
@@ -84,18 +86,11 @@ def _offset(image, offset=0):
     return image + offset
 
 
-def _normalize_scales(scales):
+def _scale_channels(scales):
     assert len(scales) == 3
     s1, s2, s3 = scales
     mean = (s1 + s2 + s3) / 3.0
     return s1 / mean, s2 / mean, s3 / mean
-
-
-def _subtract_background(image):
-    return image - np.median(image)
-
-
-def apply_scale(image):
     return image * scale
 
 
